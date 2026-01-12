@@ -3,10 +3,11 @@ Módulo: Introducción a la Inteligencia Artificial Geoespacial
 
 # 🧠 Introducción a la Inteligencia Artificial Geoespacial
 
-**Duración:** 4 horas  
-**Curso:** **Objetivo general:** Dar a conocer conceptos, herramientas y
-aplicaciones de la Inteligencia Artificial aplicada a datos y
-tecnologías geoespaciales (*GeoAI*).
+- **Duración:** 4 horas  
+- **Curso:**
+- **Objetivo general:** Dar a conocer conceptos, herramientas y
+  aplicaciones de la Inteligencia Artificial aplicada a datos y
+  tecnologías geoespaciales (*GeoAI*).
 
 ------------------------------------------------------------------------
 
