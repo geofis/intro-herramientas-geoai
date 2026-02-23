@@ -1,0 +1,776 @@
+---
+title: "Módulo: Introducción a la Inteligencia Artificial Geoespacial"
+subtitle: "Nivel · Integración de pipelines reales <br> <small>https://geofis.github.io/intro-herramientas-geoai/presentacion.html</small>"
+author: "José Ramón Martínez Batlle"
+institute: "Universidad Autónoma de Santo Domingo (UASD)"
+date: "Actualizado: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    self_contained: true
+    lib_dir: null
+    mathjax: "default"
+    seal: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: center, middle, inverse
+
+# 🧠 GEOAI
+
+## Inteligencia Artificial aplicada a la Información Geoespacial
+
+---
+
+# Estructura temporal (3 horas)
+
+- **Bloque 1 (40 min)** — Fundamentos técnicos de GeoAI
+
+- **Bloque 2 (50 min)** — Modelos fundacionales y embeddings
+
+- **Bloque 3 (50 min)** — Integración con pipelines reales (casos propios)
+
+- **Bloque 4 (40 min)** — Ecosistema práctico (QGIS + Python)
+
+- **Discusión (20 min)** — Limitaciones, ética y futuro
+
+---
+
+class: center, middle
+
+# BLOQUE 1
+
+---
+
+## Objetivo del módulo
+
+* Comprender qué es **GeoAI**.
+* Reconocer herramientas actuales (Python + QGIS).
+* Visualizar aplicaciones reales en geociencias.
+* Conectar con trabajos previos (Embeddings satelitales + Fotogrametría).
+
+---
+
+# ¿Por qué GeoAI ahora?
+
+* Explosión de datos satelitales (Sentinel, Landsat, Planet, etc.).
+* Ortofotos de ultra alta resolución.
+* Sensores GNSS, LiDAR, drones.
+* Modelos fundacionales (foundation models).
+
+💡 La escala del dato supera la capacidad de análisis manual.
+
+---
+
+# ¿Qué es GeoAI?
+
+**GeoAI = Inteligencia Artificial + Datos Geoespaciales + Métodos Espaciales**
+
+Integra:
+
+* Machine Learning
+* Deep Learning
+* Computer Vision
+* Modelos espacio‑temporales
+
+Aplicado a:
+
+* Clasificación
+* Segmentación
+* Detección de objetos
+* Predicción espacial
+
+---
+
+# IA vs ML vs Deep Learning
+
+| Concepto | Idea clave                        |
+| -------- | --------------------------------- |
+| IA       | Sistemas que simulan inteligencia |
+| ML       | Aprenden patrones desde datos     |
+| DL       | Redes neuronales profundas        |
+
+En GeoAI predominan:
+
+* CNN (imágenes)
+* Transformers
+* Vision‑Language models
+
+---
+
+# GeoAI en geociencias
+
+* Uso del suelo
+* Cambio de cobertura
+* Detección de edificaciones
+* Modelado de distribución de especies
+* Segmentación automática de hábitat
+
+---
+
+# Fundamentos técnicos
+
+---
+
+# ¿Qué distingue GeoAI del ML clásico?
+
+GeoAI no es solo ML aplicado a mapas.
+
+Integra:
+
+* Dependencia espacial
+* Autocorrelación
+* Estructura jerárquica
+* Escalas múltiples
+* No‑estacionariedad
+
+Pregunta clave:
+
+> ¿Cómo incorporar estructura espacial en modelos de IA?
+
+---
+
+# Autocorrelación espacial
+
+Primera Ley de Tobler:
+
+> "Todo está relacionado con todo lo demás, pero las cosas cercanas están más relacionadas."
+
+En ML tradicional:
+
+$$
+X_i \perp X_j
+$$
+
+<small><em>Supuesto de independencia estadística entre observaciones; no se modela estructura espacial.</em></small>
+
+En GeoAI:
+
+$$\operatorname{Cov}(X_i, X_j) = f(d_{ij})$$
+
+- <small><em>La covarianza depende de la distancia espacial entre observaciones; existe autocorrelación espacial explícita.</em></small>
+- <small><em>Covarianza cero ⇒ no correlación lineal</em></small>
+- <small><em>Independencia ⇒ no dependencia de ningún tipo</em></small>
+
+Implicación:
+
+* Validación cruzada espacial obligatoria.
+
+---
+
+# Problema crítico: Data Leakage espacial
+
+Si dividimos datos aleatoriamente:
+
+* El modelo "ve" información vecina.
+* Métricas infladas.
+
+Solución:
+
+* Spatial block cross-validation
+* Leave-one-region-out
+
+---
+
+# Tipos de tareas GeoAI
+
+1. **Clasificación pixel-based**
+2. **Segmentación semántica**
+3. **Detección de objetos**
+4. **Modelos espacio-temporales**
+5. **Embeddings geoespaciales**
+
+---
+
+class: center, middle
+
+# BLOQUE 2
+
+# Modelos fundacionales y embeddings
+
+---
+
+## ¿Qué es un embedding satelital?
+
+Una imagen satelital es un tensor:
+
+$$
+I \in \mathbb{R}^{H \times W \times B}
+$$
+
+Un modelo profundo transforma esa imagen en:
+
+$$
+z = f_\theta(I), \quad z \in \mathbb{R}^d
+$$
+
+donde:
+
+* ($d \ll H \times W \times B$). La dimensión del embedding es mucho menor que la dimensión original. Ejemplo: Original: 655,360 dimensiones. Embedding: 256 dimensiones
+* ($z$) es una **representación latente compacta**
+
+---
+
+### En términos prácticos
+
+* Comprime información espectral y espacial.
+* Reduce cientos de miles de valores a un vector pequeño.
+* Imágenes similares → vectores cercanos en $\mathbb{R}^d$.
+* Permite clustering, clasificación y modelado ecológico.
+* Captura patrones espectrales, espaciales y contextuales.
+
+---
+
+# Foundation Models en teledetección
+
+Características:
+
+* Pre-entrenados con millones de imágenes.
+* Aprenden representación general.
+* Permiten fine-tuning ligero.
+
+Ejemplos conceptuales:
+
+* Modelos tipo Vision Transformer
+* Modelos multimodales (imagen + texto)
+
+---
+
+# Pipeline real — AlphaEarth Foundations
+
+<!-- (Insertar esquema original) -->
+
+Pipeline implementado por usted:
+
+1. Descarga de tiles
+2. Extracción de embeddings
+3. Reducción
+   - UMAP. *Uniform Manifold Approximation and Projection*. Es un algoritmo de reducción de dimensionalidad no lineal.
+   - PCA. Tradicional
+4. Clustering
+5. Clasificación supervisada
+6. Evaluación
+
+---
+
+# 🧩 Diferencia PCA vs. UMAP
+
+| PCA                      | UMAP                        |
+| ------------------------ | --------------------------- |
+| Lineal                   | No lineal                   |
+| Preserva varianza global | Preserva estructura local   |
+| Rápido y estable         | Más flexible, más expresivo |
+
+
+---
+
+# Matemática simplificada del embedding
+
+Si $f_\theta$ es el modelo:
+
+$$z = f_\theta(I)$$
+
+Luego:
+
+$$\hat{y} = g(z)$$
+
+Separación entre:
+
+* Representación
+* Clasificador final
+
+---
+
+# Aplicación 1 — Clasificación de uso del suelo
+
+Flujo:
+
+Sentinel → Embeddings → Random Forest → Mapa final
+
+Discusión:
+
+* Ventajas frente a índices espectrales clásicos.
+* Robustez ante ruido.
+
+---
+
+# Aplicación 2 — Diseño de muestreo
+
+Idea clave:
+
+Clusterizar espacio latente para:
+
+* Detectar heterogeneidad ambiental.
+* Optimizar ubicación de puntos.
+
+Conexión directa con análisis espacial clásico.
+
+---
+
+# Aplicación 3 — Modelado de distribución de especies
+
+Embeddings como predictores en:
+
+* GLM
+* Random Forest
+* Boosting
+
+Comparación con:
+
+* WorldClim
+* Variables topográficas clásicas
+
+---
+
+class: center, middle
+
+# BLOQUE 3
+
+# Integración con pipelines propios
+
+---
+
+# Pipeline integrado multiescala
+
+Satélite (10 m)
+→ Embeddings
+→ Clasificación regional
+→ Selección de sitios
+→ Drone
+→ Fotogrametría terrestre
+→ Segmentación micro‑hábitat
+
+---
+
+# Fotogrametría terrestre + IA
+
+(Insertar ortomosaico y nube de puntos)
+
+Posibilidades:
+
+* Segmentación automática de individuos
+* Clasificación de micro-estructuras
+* Métricas estructurales automatizadas
+
+---
+
+# Integración con R y análisis estadístico
+
+Después de segmentación:
+
+* Exportar shapefiles
+* Calcular métricas en R
+* Modelos mixtos
+* Análisis espacial clásico
+
+GeoAI como generador de variables.
+
+---
+
+# Evaluación rigurosa
+
+Métricas:
+
+* Accuracy
+* F1-score
+* IoU (segmentación)
+* AUC
+
+Pero también:
+
+* Validación espacial
+* Transferibilidad
+* Robustez entre regiones
+
+---
+
+class: center, middle
+
+# BLOQUE 4
+
+# Ecosistema práctico
+
+---
+
+# GeoAI Python
+
+Arquitectura típica:
+
+* Rasterio
+* Torch
+* Transformers
+* SamGeo
+
+Ejemplo conceptual:
+
+```python
+from segment_anything import SamPredictor
+```
+
+---
+
+# QGIS como interfaz experimental
+
+Ventajas para curso:
+
+* Visual inmediato
+* Sin necesidad de programar mucho
+* Ideal para demo conceptual
+
+---
+
+# Demo técnica sugerida
+
+1. Cargar ortofoto
+2. Ejecutar SamGeo
+3. Ajustar prompts
+4. Evaluar resultados
+5. Exportar vectores
+6. Analizar métricas
+
+---
+
+# Limitaciones actuales
+
+* Dependencia de GPU
+* Sesgo en datos de entrenamiento
+* Generalización limitada
+* Interpretabilidad
+
+---
+
+class: center, middle
+
+# Discusión avanzada
+
+---
+
+# Ética y soberanía tecnológica
+
+* Dependencia de modelos externos.
+* Reproducibilidad.
+* Transparencia.
+* Acceso desigual a cómputo.
+
+---
+
+# Futuro de GeoAI
+
+* Modelos multimodales geoespaciales.
+* Integración GNSS + visión.
+* Modelos 4D espacio-temporales.
+* Edge AI en drones y sensores.
+
+---
+
+class: center, middle, inverse
+
+# Conclusión técnica
+
+GeoAI no reemplaza:
+
+* Estadística espacial
+* Fundamentos geomáticos
+* Teoría ecológica
+
+Los potencia cuando se integran críticamente.
+
+---
+
+# Preguntas técnicas
+
+* ¿Cómo validarías un modelo GeoAI en ecosistemas tropicales?
+* ¿Qué variables latentes podrían sustituir variables clásicas?
+* ¿Cómo diseñarías un pipeline reproducible en su laboratorio?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, echo=F}
+knitr::knit_exit()
+```
+
+
+
+
+
+---
+title: "Módulo: Introducción a la Inteligencia Artificial Geoespacial"
+subtitle: "<small>https://geofis.github.io/intro-herramientas-geoai/presentacion.html</small>"
+author: "José Ramón Martínez Batlle"
+institute: "Universidad Autónoma de Santo Domingo (UASD)"
+date: "Actualizado: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    self_contained: true
+    lib_dir: null
+    mathjax: "default"
+    seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: center, middle, inverse
+
+# 🧠 GeoAI
+
+## Inteligencia Artificial aplicada a la Información Geoespacial
+
+---
+
+class: center, middle
+
+# 🔹 Conexión con trabajos previos
+
+---
+
+# Embeddings satelitales
+
+*(Insertar aquí figura de la presentación AlphaEarth Foundations)*
+
+* Representaciones numéricas de imágenes.
+* Reducción de dimensionalidad.
+* Clasificación sin etiquetado intensivo.
+
+Aplicaciones que ya mostramos:
+
+* Clasificación de uso del suelo.
+* Diseño de muestreo.
+* Modelado ecológico.
+
+---
+
+# Flujo conceptual con embeddings
+
+Imagen satelital → Modelo fundacional → Embedding vectorial → Clustering / Clasificación → Mapa
+
+*(Insertar esquema de pipeline de la presentación anterior)*
+
+---
+
+# Fotogrametría terrestre + GeoAI
+
+*(Insertar imágenes de nube de puntos / ortomosaico de la presentación fotogramétrica)*
+
+* Ultra alta resolución.
+* Micro‑hábitat.
+* Segmentación automática de estructuras biológicas.
+
+GeoAI permite:
+
+* Extraer objetos automáticamente.
+* Clasificar micro‑elementos.
+
+---
+
+class: center, middle
+
+# 🔹 Ecosistema de herramientas
+
+---
+
+# Python GeoAI
+
+Bibliotecas clave:
+
+* PyTorch
+* Transformers
+* Segment Anything
+* GeoAI (Qiusheng Wu)
+
+Capacidades:
+
+* Descarga de datos
+* Preparación automática
+* Entrenamiento e inferencia
+* Visualización integrada
+
+---
+
+# QGIS como plataforma GeoAI
+
+Ventajas:
+
+* Software libre
+* Ecosistema de plugins
+* Integración raster/vector
+* Interfaz amigable para demo
+
+---
+
+# Plugin GeoAI (QGIS)
+
+Funciones:
+
+* Caption automático de imágenes
+* Query en lenguaje natural
+* Detección de objetos
+* Segmentación
+
+*(Dejar espacio para capturas de pantalla propias)*
+
+---
+
+# SamGeo en QGIS
+
+* Basado en Segment Anything
+* Prompts por texto
+* Prompts por puntos
+* Prompts por cajas
+
+Aplicación inmediata:
+
+* Extraer edificaciones
+* Delimitar cuerpos de agua
+
+---
+
+class: center, middle
+
+# 🔹 Demo en vivo
+
+---
+
+# Demo 1 — Instalación en OSGeoLive
+
+* Instalación plugin GeoAI
+* Dependencias
+* Configuración entorno
+
+*(Espacio para capturas del proceso real)*
+
+---
+
+# Demo 2 — Segmentación rápida
+
+1. Cargar ortofoto
+2. Definir prompt
+3. Ejecutar segmentación
+4. Exportar resultado vectorial
+
+Discusión:
+
+* Precisión
+* Tiempo de ejecución
+* Limitaciones
+
+---
+
+# Demo 3 — Vision‑Language
+
+Pregunta ejemplo:
+
+"¿Dónde están las zonas verdes más densas?"
+
+Comparar:
+
+* Interpretación humana
+* Respuesta modelo
+
+---
+
+class: center, middle
+
+# 🔹 Aplicaciones prácticas
+
+---
+
+# 🛰️ Detección automática
+
+Casos:
+
+* Catastro urbano
+* Infraestructura vial
+* Monitoreo ambiental
+
+---
+
+# 🌱 Ecología y biodiversidad
+
+* Delimitación automática de hábitat
+* Segmentación de individuos vegetales
+* Integración con modelos espaciales clásicos
+
+---
+
+# 🌍 Escalas múltiples
+
+* Satélite (10–30 m)
+* Drone (cm)
+* Fotogrametría terrestre (mm)
+
+GeoAI permite integrar escalas.
+
+---
+
+class: center, middle
+
+# 🔹 Recursos y continuidad
+
+---
+
+# Ruta de aprendizaje
+
+1. QGIS + Plugins AI
+2. Python básico
+3. Modelos pre‑entrenados
+4. Ajuste fino (fine‑tuning)
+
+---
+
+# Conexión con sus cursos
+
+* Análisis espacial clásico
+* Modelos estadísticos
+* R + QGIS
+
+GeoAI no reemplaza fundamentos.
+Los amplifica.
+
+---
+
+class: center, middle, inverse
+
+# 🏁 Cierre
+
+✔ Comprendimos qué es GeoAI.
+
+✔ Exploramos herramientas.
+
+✔ Vimos aplicaciones reales.
+
+✔ Listos para experimentar.
+
+---
+
+# Preguntas y discusión
+
+* ¿Dónde aplicarías GeoAI en tu área?
+* ¿Qué riesgos observas?
+* ¿Qué habilidades deberíamos fortalecer?

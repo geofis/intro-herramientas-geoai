@@ -1,12 +1,15 @@
 ---
 title: "Módulo: Introducción a la Inteligencia Artificial Geoespacial"
-output: github_document
+# output: github_document
+output:
+  pdf_document:
+    latex_engine: xelatex
 bibliography: biblio.bib
 ---
 
 # 🧠 Introducción a la Inteligencia Artificial Geoespacial  
 
-- **Duración:** 4 horas  
+- **Duración:** 3 horas  
 - **Curso:** 
 - **Objetivo general:** Dar a conocer conceptos, herramientas y aplicaciones de la Inteligencia Artificial aplicada a datos y tecnologías geoespaciales (*GeoAI*).
 
