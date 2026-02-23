@@ -18,6 +18,120 @@ output:
 
 class: center, middle, inverse
 
+
+```{css, echo=FALSE, eval=T}
+.title-slide {
+  background-image: url('img/fondo.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+<!-- .title-slide .remark-slide-content { -->
+<!--   background: rgba(0, 0, 0, 0.7); -->
+<!--   color: white; -->
+<!-- } -->
+
+.remark-slide-content.title-slide {
+  position: relative;
+  color: white !important;
+}
+
+.remark-slide-content.title-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 0;
+}
+
+.remark-slide-content.title-slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+
+.remark-slide-content {
+  font-size: 26px;
+}
+
+.remark-slide-content ul li {
+  margin-bottom: 12px;
+}
+
+.large { font-size: 130% }
+.medium { font-size: 110% }
+.small { font-size: 90% }
+.tiny { font-size: 70% }
+.green { color: #2E8B57; }
+.blue { color: #4169E1; }
+.red { color: #DC143C; }
+.highlight {
+  background-color: #ffff99;
+  padding: 2px 4px;
+}
+
+.box {
+  background-color: #f0f8ff;
+  border: 2px solid #4169E1;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px 0;
+}
+
+.box.light {
+  background-color: #eef4fb;
+  border-left: 6px solid #4169E1;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 15px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 1em;
+  line-height: 1.4;
+}
+
+/* Icono */
+.box.light::before {
+  content: "💡";
+  font-size: 1.6em;
+  flex-shrink: 0;
+}
+
+/* Texto */
+.box.light p {
+  margin: 0;
+}
+
+.remark-slide-content .MathJax {
+  font-size: 150% !important;
+}
+
+.equation {
+  background-color: #f5f5f5;
+  border-left: 5px solid #2E8B57;
+  padding: 15px;
+  margin: 10px 0;
+  font-family: 'Courier New', monospace;
+}
+```
+
+
+
+```{css, echo=F, eval=F}
+.medium { font-size: 110% }
+.small { font-size: 90% }
+.tiny { font-size: 70% }
+.green { color: #2E8B57; }
+.blue { color: #4169E1; }
+.red { color: #DC143C; }
+.highlight { background-color: #ffff99; padding: 2px 4px; }
+.box { background-color: #f0f8ff; border: 2px solid #4169E1; border-radius: 10px; padding: 20px; margin: 10px 0; }
+.equation { background-color: #f5f5f5; border-left: 5px solid #2E8B57; padding: 15px; margin: 10px 0; font-family: 'Courier New', monospace; }
+```
+
 # 🧠 GEOAI
 
 ## Inteligencia Artificial aplicada a la Información Geoespacial
@@ -32,7 +146,7 @@ class: center, middle, inverse
 
 - **Bloque 3 (50 min)** — Integración con pipelines reales (casos propios)
 
-- **Bloque 4 (40 min)** — Ecosistema práctico (QGIS + Python)
+- **Bloque 4 (40 min)** — Ecosistema práctico (Python, o QGIS + Python)
 
 - **Discusión (20 min)** — Limitaciones, ética y futuro
 
@@ -60,7 +174,9 @@ class: center, middle
 * Sensores GNSS, LiDAR, drones.
 * Modelos fundacionales (foundation models).
 
-💡 La escala del dato supera la capacidad de análisis manual.
+.box.light[
+  La resolución espacial/temporal/radiométrica/espectral del dato supera la capacidad de análisis manual.
+]
 
 ---
 
@@ -109,6 +225,7 @@ En GeoAI predominan:
 * Segmentación automática de hábitat
 
 ---
+class: center, middle, inverse
 
 # Fundamentos técnicos
 
@@ -149,12 +266,15 @@ $$
 En GeoAI:
 
 $$\operatorname{Cov}(X_i, X_j) = f(d_{ij})$$
+---
+
+## Diferencias
 
 - <small><em>La covarianza depende de la distancia espacial entre observaciones; existe autocorrelación espacial explícita.</em></small>
 - <small><em>Covarianza cero ⇒ no correlación lineal</em></small>
 - <small><em>Independencia ⇒ no dependencia de ningún tipo</em></small>
 
-Implicación:
+## Implicación
 
 * Validación cruzada espacial obligatoria.
 
@@ -162,15 +282,42 @@ Implicación:
 
 # Problema crítico: Data Leakage espacial
 
-Si dividimos datos aleatoriamente:
+En datos geoespaciales:
 
-* El modelo "ve" información vecina.
-* Métricas infladas.
+$$\operatorname{Cov}(X_i, X_j) \neq 0 \quad \text{si} \quad d_{ij} \text{ es pequeño}$$
 
-Solución:
+Observaciones cercanas son similares.
 
-* Spatial block cross-validation
-* Leave-one-region-out
+---
+
+## ¿Qué ocurre si dividimos aleatoriamente?
+
+* Puntos de entrenamiento y prueba pueden estar muy próximos.
+* El modelo aprende patrones locales.
+* Evalúa sobre datos casi “ya vistos”.
+
+📈 Métricas infladas  
+📉 Generalización real pobre  
+
+## Soluciones
+
+* **Spatial block cross-validation**  
+  → dividir el espacio en bloques independientes
+
+* **Leave-one-region-out**  
+  → entrenar en regiones A–C, probar en región D
+
+<!-- # Problema crítico: Data Leakage espacial -->
+
+<!-- Si dividimos datos aleatoriamente: -->
+
+<!-- * El modelo "ve" información vecina. -->
+<!-- * Métricas infladas. -->
+
+<!-- Solución: -->
+
+<!-- * Spatial block cross-validation -->
+<!-- * Leave-one-region-out -->
 
 ---
 
@@ -513,6 +660,45 @@ Los potencia cuando se integran críticamente.
 ```{r, echo=F}
 knitr::knit_exit()
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
