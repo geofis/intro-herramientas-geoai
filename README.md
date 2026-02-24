@@ -1,9 +1,17 @@
 Módulo: Introducción a la Inteligencia Artificial Geoespacial
 ================
 
+# Diapositivas
+
+[Módulo: Introducción a la Inteligencia Artificial Geoespacial. Nivel ·
+Demo e integración de pipelines
+reales](https://geofis.github.io/intro-herramientas-geoai/presentacion.html)
+
+<img src="img/qr.jpg" width="25%" />
+
 # 🧠 Introducción a la Inteligencia Artificial Geoespacial
 
-- **Duración:** 4 horas  
+- **Duración:** 3 horas  
 - **Curso:**
 - **Objetivo general:** Dar a conocer conceptos, herramientas y
   aplicaciones de la Inteligencia Artificial aplicada a datos y

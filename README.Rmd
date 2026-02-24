@@ -1,11 +1,21 @@
 ---
 title: "Módulo: Introducción a la Inteligencia Artificial Geoespacial"
-# output: github_document
-output:
-  pdf_document:
-    latex_engine: xelatex
+output: github_document
+# output:
+#   pdf_document:
+#     latex_engine: xelatex
 bibliography: biblio.bib
 ---
+
+
+# Diapositivas
+
+[Módulo: Introducción a la Inteligencia Artificial Geoespacial. Nivel · Demo e integración de pipelines reales](https://geofis.github.io/intro-herramientas-geoai/presentacion.html)
+
+```{r, out.width='25%', echo=F}
+knitr::include_graphics('img/qr.jpg')
+```
+
 
 # 🧠 Introducción a la Inteligencia Artificial Geoespacial  
 

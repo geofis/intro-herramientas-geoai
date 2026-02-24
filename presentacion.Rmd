@@ -144,6 +144,14 @@ knitr::opts_chunk$set(
 .equation { background-color: #f5f5f5; border-left: 5px solid #2E8B57; padding: 15px; margin: 10px 0; font-family: 'Courier New', monospace; }
 ```
 
+```{r, out.width='50%'}
+knitr::include_graphics('img/qr.jpg')
+```
+
+
+---
+class: center, middle, inverse
+
 # 🧠 GEOAI
 
 ## Inteligencia Artificial aplicada a la Información Geoespacial
@@ -629,6 +637,11 @@ Ventajas para curso:
 
 - [Aplicaciones de los embeddings satelitales de Google AlphaEarth Foundations en el análisis geoespacial: clasificación de uso del suelo, modelado de distribución de especies y diseño de muestreo](https://geofis.github.io/ciidi-uasd-2025-aef-embeddings/presentacion.html)
 - [Estadística zonal multipropósito sobre información geoespacial de República Dominicana, usando Google Earth Engine, Python y R](https://geofis.github.io/estadistica-zonal-multiproposito-rd/presentaciones/II-Congreso-IDI-XXII-JIC-nov23.html#/)
+
+---
+
+# Aplicaciones en RD (cont.)
+
 - [Fotogrametría terrestre de ultra alta resolución aplicada a la evaluación de hábitat y diversidad biológica en microescala](https://geofis.github.io/ciidi-uasd-2025-fotogrametria-terrestre-aplicada/presentacion.html)
 - [Cartografía geomorfológica de detalle de un río tropical usando fotografías aéreas de resolución centimétrica y *deep learning*](https://geofis.github.io/geomorfologia-detalle-tramo-1km-rio-mana/)
 
