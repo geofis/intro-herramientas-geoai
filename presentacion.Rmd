@@ -1,8 +1,8 @@
 ---
 title: "Módulo: Introducción a la Inteligencia Artificial Geoespacial"
-subtitle: "Nivel · Integración de pipelines reales <br> <small>https://geofis.github.io/intro-herramientas-geoai/presentacion.html</small>"
+subtitle: "Nivel · Demo e integración de pipelines reales <br> <small>https://geofis.github.io/intro-herramientas-geoai/presentacion.html</small>"
 author: "José Ramón Martínez Batlle"
-institute: "Universidad Autónoma de Santo Domingo (UASD)"
+institute: "Instituto Cartográfico Militar (ICM)"
 date: "Actualizado: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
@@ -18,6 +18,21 @@ output:
 
 class: center, middle, inverse
 
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  fig.width = 12, 
+  fig.height = 8, 
+  fig.retina = 3,
+  out.width = "100%",
+  cache = FALSE,
+  echo = FALSE,
+  message = FALSE, 
+  warning = FALSE,
+  hiline = TRUE
+)
+```
 
 ```{css, echo=FALSE, eval=T}
 .title-slide {
@@ -48,9 +63,6 @@ class: center, middle, inverse
   position: relative;
   z-index: 1;
 }
-
-
-
 
 .remark-slide-content {
   font-size: 26px;
@@ -151,8 +163,7 @@ class: center, middle, inverse
 - **Discusión (20 min)** — Limitaciones, ética y futuro
 
 ---
-
-class: center, middle
+class: center, middle, inverse
 
 # BLOQUE 1
 
@@ -161,7 +172,7 @@ class: center, middle
 ## Objetivo del módulo
 
 * Comprender qué es **GeoAI**.
-* Reconocer herramientas actuales (Python + QGIS).
+* Reconocer herramientas actuales (Python, o Python + QGIS).
 * Visualizar aplicaciones reales en geociencias.
 * Conectar con trabajos previos (Embeddings satelitales + Fotogrametría).
 
@@ -186,10 +197,10 @@ class: center, middle
 
 Integra:
 
-* Machine Learning
-* Deep Learning
+* Machine Learning/deep Learning
 * Computer Vision
 * Modelos espacio‑temporales
+* Computación en la nube (e.g. GEE)
 
 Aplicado a:
 
@@ -210,9 +221,9 @@ Aplicado a:
 
 En GeoAI predominan:
 
-* CNN (imágenes)
-* Transformers
-* Vision‑Language models
+* **CNN**: Redes para analizar imágenes (clasificación, segmentación).
+* **Transformers**: Modelos de atención para capturar relaciones complejas (contexto).
+* **Vision-Language**: Integran imágenes y texto.
 
 ---
 
@@ -223,6 +234,45 @@ En GeoAI predominan:
 * Detección de edificaciones
 * Modelado de distribución de especies
 * Segmentación automática de hábitat
+
+---
+
+# Implementación
+
+- Existen paquetes y "tuberías" (*pipelines*) personalizadas.
+
+- Integración con plataformas geoespaciales (QGIS, Google Earth Engine, Python/R).
+
+- Uso de modelos pre-entrenados y *fine-tuning* con datos locales.
+
+- GeoAI es un paquete en Python que integra IA y análisis geoespacial, permitiendo aplicar modelos avanzados de *deep learning* (PyTorch, Transformers, etc.) a imágenes satelitales, fotografías aéreas y datos vectoriales con mínima programación.
+
+---
+class: figure-slide, center, inverse, middle
+
+```{r, out.width='120%', echo=F, eval=T}
+knitr::include_graphics('img/geoai-python-package.jpg')
+```
+
+https://opengeoai.org/
+
+---
+class: figure-slide, center, inverse, middle
+
+```{r, out.width='120%', echo=F, eval=T}
+knitr::include_graphics('img/geoai-nb-example-01.jpg')
+```
+
+https://opengeoai.org/examples/train_object_detection_model/
+
+---
+class: figure-slide, center, inverse, middle
+
+```{r, out.width='80%', echo=F, eval=T}
+knitr::include_graphics('img/geoai-nb-example-02.jpg')
+```
+
+https://opengeoai.org/examples/train_object_detection_model/
 
 ---
 class: center, middle, inverse
@@ -270,9 +320,9 @@ $$\operatorname{Cov}(X_i, X_j) = f(d_{ij})$$
 
 ## Diferencias
 
-- <small><em>La covarianza depende de la distancia espacial entre observaciones; existe autocorrelación espacial explícita.</em></small>
-- <small><em>Covarianza cero ⇒ no correlación lineal</em></small>
-- <small><em>Independencia ⇒ no dependencia de ningún tipo</em></small>
+- La **covarianza depende de la distancia espacial** entre observaciones; existe autocorrelación espacial explícita.
+- Covarianza cero ⇒ no correlación lineal
+- Independencia ⇒ no dependencia de ningún tipo
 
 ## Implicación
 
@@ -306,18 +356,6 @@ Observaciones cercanas son similares.
 
 * **Leave-one-region-out**  
   → entrenar en regiones A–C, probar en región D
-
-<!-- # Problema crítico: Data Leakage espacial -->
-
-<!-- Si dividimos datos aleatoriamente: -->
-
-<!-- * El modelo "ve" información vecina. -->
-<!-- * Métricas infladas. -->
-
-<!-- Solución: -->
-
-<!-- * Spatial block cross-validation -->
-<!-- * Leave-one-region-out -->
 
 ---
 
@@ -429,14 +467,22 @@ Separación entre:
 * Clasificador final
 
 ---
+class: center, middle, inverse
 
-# Aplicación 1 — Clasificación de uso del suelo
+# APLICACIONES
 
-Flujo:
+(demos al final)
+
+---
+
+
+# Aplicación 1 — Clasificación de coberturas y uso del suelo
+
+## Flujo con machine learning
 
 Sentinel → Embeddings → Random Forest → Mapa final
 
-Discusión:
+## Discusión
 
 * Ventajas frente a índices espectrales clásicos.
 * Robustez ante ruido.
@@ -470,7 +516,6 @@ Comparación con:
 * Variables topográficas clásicas
 
 ---
-
 class: center, middle
 
 # BLOQUE 3
@@ -492,8 +537,6 @@ Satélite (10 m)
 ---
 
 # Fotogrametría terrestre + IA
-
-(Insertar ortomosaico y nube de puntos)
 
 Posibilidades:
 
@@ -552,7 +595,7 @@ Arquitectura típica:
 
 Ejemplo conceptual:
 
-```python
+```{python, eval=F, echo=T}
 from segment_anything import SamPredictor
 ```
 
@@ -560,22 +603,34 @@ from segment_anything import SamPredictor
 
 # QGIS como interfaz experimental
 
+Plugins:
+
+- [GeoAI (Qiusheng Wu)](https://plugins.qgis.org/plugins/geoai/)
+- [Geo Knowledge AI](https://plugins.qgis.org/plugins/geo_knowledge_ai/#plugin-about)
+
 Ventajas para curso:
 
-* Visual inmediato
-* Sin necesidad de programar mucho
-* Ideal para demo conceptual
+* Visual, la interfaz gráfica facilita la adopción.
+* Sin necesidad de programar mucho, **aunque requiere configuración previa y acceso a servicios de computación en la nube o modelos en línea**.
 
 ---
 
-# Demo técnica sugerida
+# Demos
 
-1. Cargar ortofoto
-2. Ejecutar SamGeo
-3. Ajustar prompts
-4. Evaluar resultados
-5. Exportar vectores
-6. Analizar métricas
+- Primero, hablemos de [OSGeoLive](https://live.osgeo.org/en/index.html)
+
+- Veamos un cuaderno de GeoAI. [Train an Object Detection Model with GeoAI](https://colab.research.google.com/drive/1GtUjHEYBIu6YwyY3aEohkoz_DylnkvtK?usp=sharing)
+
+---
+
+# Aplicaciones en RD
+
+- Nubes de puntos clasificadas, CloudCompare.
+
+- [Aplicaciones de los embeddings satelitales de Google AlphaEarth Foundations en el análisis geoespacial: clasificación de uso del suelo, modelado de distribución de especies y diseño de muestreo](https://geofis.github.io/ciidi-uasd-2025-aef-embeddings/presentacion.html)
+- [Estadística zonal multipropósito sobre información geoespacial de República Dominicana, usando Google Earth Engine, Python y R](https://geofis.github.io/estadistica-zonal-multiproposito-rd/presentaciones/II-Congreso-IDI-XXII-JIC-nov23.html#/)
+- [Fotogrametría terrestre de ultra alta resolución aplicada a la evaluación de hábitat y diversidad biológica en microescala](https://geofis.github.io/ciidi-uasd-2025-fotogrametria-terrestre-aplicada/presentacion.html)
+- [Cartografía geomorfológica de detalle de un río tropical usando fotografías aéreas de resolución centimétrica y *deep learning*](https://geofis.github.io/geomorfologia-detalle-tramo-1km-rio-mana/)
 
 ---
 
@@ -612,8 +667,6 @@ class: center, middle
 
 ---
 
-class: center, middle, inverse
-
 # Conclusión técnica
 
 GeoAI no reemplaza:
@@ -622,15 +675,38 @@ GeoAI no reemplaza:
 * Fundamentos geomáticos
 * Teoría ecológica
 
-Los potencia cuando se integran críticamente.
+---
+
+# Ruta de aprendizaje
+
+1. QGIS + Plugins AI (e.g. GeoAI).
+2. Python básico.
+3. Modelos pre‑entrenados.
+4. Ajuste fino (fine‑tuning).
+
+.box.light[
+GeoAI no reemplaza fundamentos. Los amplifica.
+]
 
 ---
 
-# Preguntas técnicas
+# 🏁 Cierre
+
+✔ Comprendimos qué es GeoAI.
+
+✔ Exploramos herramientas.
+
+✔ Vimos aplicaciones reales.
+
+✔ Listos para experimentar en una formación avanzada.
+
+---
+
+# Preguntas para orientar aplicaciones específicas
 
 * ¿Cómo validarías un modelo GeoAI en ecosistemas tropicales?
 * ¿Qué variables latentes podrían sustituir variables clásicas?
-* ¿Cómo diseñarías un pipeline reproducible en su laboratorio?
+* ¿Cómo diseñarías un *pipeline* reproducible en su laboratorio?
 
 
 
@@ -921,23 +997,6 @@ class: center, middle
 
 ---
 
-# Ruta de aprendizaje
-
-1. QGIS + Plugins AI
-2. Python básico
-3. Modelos pre‑entrenados
-4. Ajuste fino (fine‑tuning)
-
----
-
-# Conexión con sus cursos
-
-* Análisis espacial clásico
-* Modelos estadísticos
-* R + QGIS
-
-GeoAI no reemplaza fundamentos.
-Los amplifica.
 
 ---
 
@@ -951,7 +1010,7 @@ class: center, middle, inverse
 
 ✔ Vimos aplicaciones reales.
 
-✔ Listos para experimentar.
+✔ Listos para experimentar en una formación avanzada.
 
 ---
 
